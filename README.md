@@ -6,7 +6,7 @@ LucyFix removes arbitrary friction in modern Minecraft, restoring gameplay loops
 
 \---
 
-## What's in 1.0.0
+## What's in 1.0.1
 
 LucyFix 1.0.1: Descriptions corrected, functionality is the same.
 The prior release of 1.0.0 had incorrect descriptions in the source code. This release overwrites that with identical functionality to 1.0.0.
