@@ -1,6 +1,6 @@
 # LucyFix — Source Code
 
-**by LucyBeyondMe** | Fabric 1.20.1 | Version 1.0.0
+**by LucyBeyondMe** | Fabric 1.20.1 | Version 1.0.1
 
 LucyFix removes arbitrary friction in modern Minecraft, restoring gameplay loops and progression to natural, intuitive systems.
 
@@ -8,10 +8,13 @@ LucyFix removes arbitrary friction in modern Minecraft, restoring gameplay loops
 
 ## What's in 1.0.0
 
-* **XP removed** — XP orbs never spawn. The experience bar is gone from the HUD. Mending still exists as an enchantment but has no function.
-* **Enchanting table rework** — No XP cost. Lapis is the sole cost, scaling by slot: 1 / 2 / 3 lapis. Vanilla handles lapis consumption.
-* **Anvil rework** — No XP cost, no prior work penalty, no Too Expensive cap. Material repairs are free. Applying enchanted books costs lapis from inventory, scaling with total enchantment level (sum of levels × 3).
-* **Netherite upgrade template removed** — Diamond gear + netherite ingot = netherite gear. No template required. Armor trims unaffected.
+LucyFix 1.0.1: Descriptions corrected, functionality is the same.
+The prior release of 1.0.0 had incorrect descriptions in the source code. This release overwrites that with identical functionality to 1.0.0.
+XP orbs no longer spawn.
+Enchanting now requires only 1-3 lapis, scaling with the power of enchants.
+Combining books in anvils now requires only lapis, scaling with the amount and power of enchants.
+Repairing items in anvils now requires only the base material.
+Upgrading to netherite no longer requires a netherite upgrade.
 
 \---
 
