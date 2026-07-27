@@ -7,12 +7,19 @@
     "ExperienceOrbMixin",
     "PlayerEntityMixin",
     "AnvilScreenHandlerMixin",
+    "ForgingScreenHandlerMixin",
     "EnchantmentScreenHandlerMixin",
-    "SmithingTransformRecipeMixin"
+    "SmithingTransformRecipeMixin",
+    "EnchantmentMixin",
+    "ItemGroupEntriesMixin",
+    "LootTableMixin",
+    "MerchantEntityMixin",
+    "SlotMixin"
   ],
   "client": [
     "InGameHudMixin",
-    "EnchantmentScreenMixin"
+    "EnchantmentScreenMixin",
+    "AnvilScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

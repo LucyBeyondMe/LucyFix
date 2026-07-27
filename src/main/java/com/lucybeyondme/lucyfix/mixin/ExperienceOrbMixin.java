@@ -25,6 +25,7 @@ public class ExperienceOrbMixin {
         cancellable = true
     )
     private static void cancelXpSpawn(CallbackInfo ci) {
+        // Cancel at the shared static spawn helper to cover every normal XP source.
         ci.cancel();
     }
 }
