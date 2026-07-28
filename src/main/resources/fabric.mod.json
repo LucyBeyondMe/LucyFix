@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "lucyfix",
+  "version": "${version}",
+  "name": "LucyFix",
+  "description": "LucyFix removes arbitrary friction in modern Minecraft, restoring gameplay loops and progression to natural, intuitive systems.",
+  "authors": [
+    "LucyBeyondMe"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.lucybeyondme.lucyfix.LucyFix"
+    ]
+  },
+  "mixins": [
+    "lucyfix.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "fabric-api": "*",
+    "minecraft": "~1.20.1"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "refmap": "lucyfix-refmap.json",
+  "package": "com.lucybeyondme.lucyfix.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ExperienceOrbMixin",
+    "PlayerEntityMixin",
+    "AnvilScreenHandlerMixin",
+    "ForgingScreenHandlerMixin",
+    "EnchantmentScreenHandlerMixin",
+    "SmithingTransformRecipeMixin",
+    "EnchantmentMixin",
+    "ItemGroupEntriesMixin",
+    "LootTableMixin",
+    "MerchantEntityMixin",
+    "SlotMixin"
+  ],
+  "client": [
+    "InGameHudMixin",
+    "EnchantmentScreenMixin",
+    "AnvilScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
