@@ -3,6 +3,13 @@ plugins {
 	id 'maven-publish'
 }
 
+loom {
+	mixin {
+		useLegacyMixinAp = true
+		defaultRefmapName = "LucyFix-refmap.json"
+	}
+}
+
 version = project.mod_version
 group = project.maven_group
 

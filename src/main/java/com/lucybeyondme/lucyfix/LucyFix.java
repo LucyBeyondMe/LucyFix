@@ -12,6 +12,6 @@ public class LucyFix implements ModInitializer {
     @Override
     public void onInitialize() {
         // Keep startup work minimal; gameplay changes are applied by Mixins.
-        LOGGER.info("LucyFix 1.0.3 loaded.");
+        LOGGER.info("LucyFix 1.0.4 loaded.");
     }
 }

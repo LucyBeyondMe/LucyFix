@@ -1,16 +1,21 @@
 package com.lucybeyondme.lucyfix.mixin;
 
 import com.lucybeyondme.lucyfix.screen.LapisAnvil;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.AnvilScreenHandler;
 import net.minecraft.screen.ForgingScreenHandler;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.Property;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.Identifier;
+
+import java.util.Map;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -47,6 +52,14 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler imple
             public boolean canInsert(ItemStack stack) {
                 return stack.isOf(Items.LAPIS_LAZULI);
             }
+
+            @Override
+            public Pair<Identifier, Identifier> getBackgroundSprite() {
+                return Pair.of(
+                    PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,
+                    new Identifier("lucyfix", "item/empty_slot_lapis_lazuli")
+                );
+            }
         });
     }
 
@@ -58,21 +71,26 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler imple
         method = "updateResult",
         at = @At(
             value = "FIELD",
-            target = "Lnet/minecraft/entity/player/PlayerAbilities;creativeMode:Z"
+            target = "Lnet/minecraft/entity/player/PlayerAbilities;creativeMode:Z",
+            ordinal = 1
         )
     )
     private boolean lucyfix$ignoreTooExpensiveLimit(net.minecraft.entity.player.PlayerAbilities abilities) {
+        // updateResult reads creativeMode twice. The first read controls whether
+        // incompatible enchantments can be applied, and must retain vanilla behavior.
+        // Only the second read belongs to the 40-level "Too Expensive" check.
         return true;
     }
 
     @Inject(method = "updateResult", at = @At("RETURN"))
     private void lucyfix$replaceExperienceCost(CallbackInfo ci) {
+        ItemStack firstInput = this.getSlot(0).getStack();
         ItemStack secondInput = this.getSlot(1).getStack();
         ItemStack output = this.getSlot(2).getStack();
 
         // Only enchanted-book combinations pay lapis; repairs and renames stay free.
         if (!output.isEmpty() && secondInput.isOf(Items.ENCHANTED_BOOK)) {
-            this.lucyfix$lapisCost = Math.max(1, lucyfix$totalStoredLevels(secondInput) * 3);
+            this.lucyfix$lapisCost = lucyfix$highestAppliedLevel(firstInput, output) * 3;
             this.levelCost.set(this.lucyfix$lapisCost);
         } else {
             this.lucyfix$lapisCost = 0;
@@ -124,13 +142,18 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler imple
     }
 
     @Unique
-    private static int lucyfix$totalStoredLevels(ItemStack stack) {
-        // Sum stored levels before multiplying by the configured three-lapis rate.
-        NbtList enchantments = EnchantedBookItem.getEnchantmentNbt(stack);
-        int total = 0;
-        for (int index = 0; index < enchantments.size(); index++) {
-            total += Math.max(0, enchantments.getCompound(index).getShort("lvl"));
+    private static int lucyfix$highestAppliedLevel(ItemStack input, ItemStack output) {
+        Map<Enchantment, Integer> inputEnchantments = EnchantmentHelper.get(input);
+        Map<Enchantment, Integer> outputEnchantments = EnchantmentHelper.get(output);
+        int highestAppliedLevel = 0;
+
+        for (Map.Entry<Enchantment, Integer> enchantment : outputEnchantments.entrySet()) {
+            int oldLevel = inputEnchantments.getOrDefault(enchantment.getKey(), 0);
+            if (enchantment.getValue() > oldLevel) {
+                highestAppliedLevel = Math.max(highestAppliedLevel, enchantment.getValue());
+            }
         }
-        return total;
+
+        return highestAppliedLevel;
     }
 }
